@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,6 +29,11 @@ public class BeerController {
     public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId){
 
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<BeerDto>> getBeers(){
+         return new ResponseEntity<>(beerService.getBeers(), HttpStatus.OK);
     }
 
 }
