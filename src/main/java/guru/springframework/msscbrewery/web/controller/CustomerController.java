@@ -1,7 +1,6 @@
 package guru.springframework.msscbrewery.web.controller;
 
 import guru.springframework.msscbrewery.services.CustomerService;
-import guru.springframework.msscbrewery.web.model.BeerDto;
 import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,13 +46,13 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{customerId}")
-    public ResponseEntity deleteCustomer(@PathVariable("customerId") UUID customerId) {
+    public  ResponseEntity<HttpStatus> deleteCustomer(@PathVariable("customerId") UUID customerId) {
         if (customerService.getCustomerById(customerId)!=null) {
             customerService.deleteById(customerId);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+          return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else{
-             throw new RuntimeException("Customer not found");
-        }
+            throw new RuntimeException("Customer not found");
+      }
     }
 }
