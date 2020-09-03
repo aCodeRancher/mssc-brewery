@@ -6,7 +6,6 @@ import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -54,6 +53,7 @@ public class CustomerController1Test {
                 .content(customerDtoJson)
                 )
                 .andExpect(status().isBadRequest());
+        verify(customerService,times(0)).saveNewCustomer(any(CustomerDto.class));
      }
 
      @Test
@@ -68,6 +68,7 @@ public class CustomerController1Test {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(customerDtoJson)
               ).andExpect(status().isCreated());
+         verify(customerService,times(1)).saveNewCustomer(any(CustomerDto.class));
      }
 
 }
