@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.*;
 
@@ -55,6 +55,21 @@ public class CustomerController1Test {
                 .andExpect(status().isBadRequest());
         verify(customerService,times(0)).saveNewCustomer(any(CustomerDto.class));
      }
+
+     @Test
+     public void handleUpdateTest() throws Exception{
+         UUID uuid = UUID.fromString("e0009962-28ea-4185-b9c6-7613f6c2a5ee");
+        CustomerDto customerDto = CustomerDto.builder()
+                 .id(uuid)
+                 .name("John").build();
+         String customerDtoJson = mapper.writeValueAsString(customerDto);
+
+         doNothing().when(customerService).updateCustomer(uuid, customerDto);
+         mockMvc.perform(put("/api/v1/customer/" + uuid)
+                         .content(customerDtoJson).contentType(MediaType.APPLICATION_JSON))
+                 .andExpect(status().isNoContent());
+     }
+
 
      @Test
     public void testhandlePost() throws Exception{

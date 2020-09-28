@@ -5,9 +5,12 @@ import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 /**
@@ -16,6 +19,7 @@ import java.util.UUID;
 
 @RequestMapping("api/v1/customer")
 @RestController
+@Validated
 public class CustomerController {
 
     private CustomerService customerService;
@@ -31,7 +35,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody @Valid CustomerDto customerDto){
+    public ResponseEntity handlePost(@RequestBody  @Valid CustomerDto customerDto){
         CustomerDto savedDto = customerService.saveNewCustomer(customerDto);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -42,7 +46,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void handleUpdate(@PathVariable("customerId") UUID customerId, @Valid @RequestBody CustomerDto customerDto){
+    public void handleUpdate( @PathVariable("customerId") UUID customerId, @Valid @RequestBody CustomerDto customerDto){
         customerService.updateCustomer(customerId, customerDto);
     }
 
@@ -51,4 +55,8 @@ public class CustomerController {
         customerService.deleteById(customerId);
     }
 
+    @GetMapping ("/hi/{name}")
+    public ResponseEntity<String> handleValidation( @Valid @PathVariable("name") @Size(min=4) String name){
+        return ResponseEntity.ok("valid");
+    }
 }
